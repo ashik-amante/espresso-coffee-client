@@ -2,12 +2,15 @@ import Swal from "sweetalert2";
 import './ac.css'
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../Provider/AuthProvider";
 
 
 const Addcoffee = () => {
+    const {user} = useContext(AuthContext)
     const navigate = useNavigate()
-    const handlebackhome = ()=>{
-        navigate('/')
+    const handlebackhome = () => {
+        navigate(-1)
     }
     const handleAddCoffee = event => {
         event.preventDefault()
@@ -19,19 +22,43 @@ const Addcoffee = () => {
         const category = form.category.value;
         const details = form.details.value;
         const photo = form.photo.value;
-        const newCoffee = { name, chef, supplier, taste, category, details, photo }
-        console.log(newCoffee);
+        const email = user?.email;
+        const coffee = { name, chef, supplier, taste, category, details, photo,email }
+        console.log(coffee);
 
         // send data to the server
+        fetch('http://localhost:5000/coffees',{
+            method:'POST',
+            headers:{
+                'content-type': 'application/json',
+            },
+            body:JSON.stringify(coffee)
+        })
+        .then(res=> res.json())
+        .then(data=>{
+            console.log(data);
+            if(data.insertedId){
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your Coffee has been added",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+            }
+            form.reset()
+        })
 
     }
     return (
         <div >
-            
-            <div className=" font-semibold flex items-center gap-4 mt-8  px-10">
-                <span className="font-rancho text-xl"><FaLongArrowAltLeft />
-                </span>
-                <button className="font-rancho" onClick={handlebackhome}>Back to home</button>
+
+            <div className="  mt-8  px-10">
+                <button className="flex items-center gap-4 font-semibold hover:bg-[#D2B48C] px-8 py-2 rounded-lg">
+                    <span className="font-rancho text-xl"><FaLongArrowAltLeft />
+                    </span>
+                    <button className="font-rancho " onClick={handlebackhome}>Back to home</button>
+                </button>
             </div>
             <div className="bg-[#F4F3F0] p-24 coffee">
                 <div className="mb-10">

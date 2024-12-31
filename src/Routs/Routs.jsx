@@ -6,6 +6,8 @@ import Root from "../Root/Root";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import PrivateRoute from "../PrivateRoutes/PrivateRoute";
+import CoffeeDetail from "../Pages/Detail/CoffeeDetail";
+import MyCoffee from "../Pages/Mycoffee/MyCoffee";
 
 
 
@@ -25,8 +27,10 @@ const routs = createBrowserRouter([
                 element:<PrivateRoute><Addcoffee></Addcoffee></PrivateRoute>
             },
             {
-                path:'/updateCoffee',
-                element:<PrivateRoute><Updatecoffee></Updatecoffee></PrivateRoute>
+                path:'/myCoffee',
+                // path:'/myCoffee/:email',
+                element:<PrivateRoute><MyCoffee></MyCoffee></PrivateRoute>,
+                // loader: ({params})=> fetch(`http://localhost:5000/coffees/${params.email}`)
             },
             {
                 path:'/login',
@@ -35,6 +39,11 @@ const routs = createBrowserRouter([
             {
                 path:'/register',
                 element: <Register></Register>
+            },
+            {
+                path:'/details/:id',
+                element: <PrivateRoute><CoffeeDetail></CoffeeDetail></PrivateRoute>,
+                loader: ({params})=> fetch(`http://localhost:5000/coffees/${params.id}`)
             },
         ]
     }

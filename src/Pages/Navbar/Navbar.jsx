@@ -4,11 +4,11 @@ import { AuthContext } from '../../Provider/AuthProvider';
 
 const Navbar = () => {
     const {user} = useContext(AuthContext)
-    console.log(user);
+    // console.log(user);
     const navlinks = <>
         <li><NavLink to='/'>Home</NavLink></li>
         <li><NavLink to='/addCoffee'>Add Coffee </NavLink></li>
-        <li><NavLink to='/updateCoffee'>Update Coffee</NavLink></li>
+        <li><NavLink to='/myCoffee'>My Coffee</NavLink></li>
     </>
     return (
         <div className="navbar bg-base-100">

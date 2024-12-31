@@ -5,7 +5,7 @@ import CoffeeCard from "./CoffeeCard";
 
 const Popular = () => {
     const loadedCoffees = useLoaderData()
-    console.log(loadedCoffees);
+    // console.log(loadedCoffees);
     return (
         <div className="popular">
             <div className="flex  items-center justify-center max-w-6xl mx-auto  mt-20">

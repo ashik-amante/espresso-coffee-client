@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 
 
 const CoffeeCard = ({ coffee }) => {
-    console.log(coffee);
-    const { name, chef, supplier, taste, category, details, photo, email } = coffee
+    // console.log(coffee);
+    const { name,_id, chef, supplier, taste, category, details, photo, email } = coffee
     return (
 
         <div className="card card-side  shadow-xl">
@@ -20,9 +21,11 @@ const CoffeeCard = ({ coffee }) => {
                 </div>
                 <div className="card-actions justify-end">
                     <div className="join join-vertical space-y-2 mr-4">
-                        <button className="btn ">View</button>
+                        <Link to={`details/${_id}`}>
+                            <button className="btn ">View</button>
+                        </Link>
                         <button className="btn ">Cart</button>
-                       
+
                     </div>
                 </div>
             </div>

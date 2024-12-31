@@ -41,6 +41,11 @@ const routs = createBrowserRouter([
                 element: <Register></Register>
             },
             {
+                path:'/updateCoffee/:id',
+                element: <Updatecoffee></Updatecoffee>,
+                loader:({params})=> fetch(`http://localhost:5000/coffees/${params.id}`)
+            },
+            {
                 path:'/details/:id',
                 element: <PrivateRoute><CoffeeDetail></CoffeeDetail></PrivateRoute>,
                 loader: ({params})=> fetch(`http://localhost:5000/coffees/${params.id}`)

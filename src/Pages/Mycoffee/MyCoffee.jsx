@@ -1,13 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 const MyCoffee = () => {
     const { user } = useContext(AuthContext)
     console.log(user.email);
     const [item, setItem] = useState([])
-    // fetch data 
+    console.log(item);
+
+
+    // fetch data for particular user
     useEffect(() => {
         fetch(`http://localhost:5000/coffees/email/${user?.email}`)
             .then(res => res.json())
@@ -16,6 +20,41 @@ const MyCoffee = () => {
                 setItem(data)
             })
     }, [user])
+
+    // delete specific coffee
+    const handleDdelete = id => {
+        console.log(id);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://localhost:5000/coffees/${id}`, {
+                    method: 'DELETE',
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your Coffee has been deleted.",
+                            icon: "success"
+                        });
+                        const remaining = item.filter(coff => coff._id !== id)
+                        setItem(remaining)
+                    })
+
+            }
+        });
+
+    }
+    // update coffee
+
     return (
         <div className="max-w-6xl mx-auto">
             <h1 className="font-rancho text-4xl text-center mb-20 mt-10">My Added coffee : {item.length}</h1>
@@ -33,7 +72,7 @@ const MyCoffee = () => {
                             </figure>
                             <div className=" flex w-full justify-between items-center ">
                                 <div className=" ml-6 w-full">
-                                    <p className="font-semibold">Name: <span className="font-normal"> {coffee.coffeename}</span></p>
+                                    <p className="font-semibold">Name:  <span className="font-normal"> {coffee.name}</span></p>
                                     <p className="font-semibold">Chef: <span className="font-normal"> {coffee.chef}</span></p>
                                     <p className="font-semibold">Taste: <span className="font-normal"> {coffee.taste}</span></p>
                                 </div>
@@ -42,8 +81,10 @@ const MyCoffee = () => {
                                         <Link to={`/details/${coffee._id}`}>
                                             <button className="btn ">View</button>
                                         </Link>
-                                        <button className="btn ">Update</button>
-                                        <button className="btn ">Deleye</button>
+                                        <Link to={`/updateCoffee/${coffee._id}`}>
+                                            <button className="btn ">Update</button>
+                                        </Link>
+                                        <button onClick={() => handleDdelete(coffee._id)} className="btn ">Delete</button>
 
                                     </div>
                                 </div>

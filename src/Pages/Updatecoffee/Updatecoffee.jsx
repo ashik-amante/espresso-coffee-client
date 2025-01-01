@@ -24,6 +24,7 @@ const Updatecoffee = () => {
         
         const updatedCoffee = { name, chef, supplier, taste, category, details, photo, }
         console.log(updatedCoffee);
+        
          // Update data to the server
                 fetch(`http://localhost:5000/coffees/${_id}`,{
                     method:'PUT',

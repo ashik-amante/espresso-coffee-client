@@ -4,6 +4,7 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
+import axios from "axios";
 
 
 const Addcoffee = () => {
@@ -25,19 +26,11 @@ const Addcoffee = () => {
         const email = user?.email;
         const coffee = { name, chef, supplier, taste, category, details, photo,email }
         console.log(coffee);
-
-        // send data to the server
-        fetch('http://localhost:5000/coffees',{
-            method:'POST',
-            headers:{
-                'content-type': 'application/json',
-            },
-            body:JSON.stringify(coffee)
-        })
-        .then(res=> res.json())
+        // using axios
+        axios.post('http://localhost:5000/coffees',coffee)
         .then(data=>{
-            console.log(data);
-            if(data.insertedId){
+            console.log(data.data);
+            if(data.data.insertedId){
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
@@ -46,8 +39,30 @@ const Addcoffee = () => {
                     timer: 1500
                   });
             }
-            form.reset()
         })
+
+        // send data to the server
+        // fetch('http://localhost:5000/coffees',{
+        //     method:'POST',
+        //     headers:{
+        //         'content-type': 'application/json',
+        //     },
+        //     body:JSON.stringify(coffee)
+        // })
+        // .then(res=> res.json())
+        // .then(data=>{
+        //     console.log(data);
+        //     if(data.insertedId){
+        //         Swal.fire({
+        //             position: "top-end",
+        //             icon: "success",
+        //             title: "Your Coffee has been added",
+        //             showConfirmButton: false,
+        //             timer: 1500
+        //           });
+        //     }
+        //     form.reset()
+        // })
 
     }
     return (
